@@ -1,0 +1,50 @@
+<main class="container">
+  <header>
+    <h1>Consulta Vehicular Integrada (SRI &amp; ANT)</h1>
+    <p>Validación de contribuyente persona natural, vehículo, matrícula y puntos de licencia.</p>
+  </header>
+
+  <section class="card form-card">
+    <div class="grid-form">
+      <div>
+        <label for="ruc">RUC (13 dígitos)</label>
+        <input id="ruc" type="text" maxlength="13" [(ngModel)]="ruc" placeholder="Ej: 1711285047001" />
+      </div>
+      <div>
+        <label for="placa">Placa Vehicular</label>
+        <input id="placa" type="text" maxlength="8" [(ngModel)]="placa" placeholder="Ej: PBZ8917" />
+      </div>
+      <div class="btn-wrap">
+        <button (click)="consultar()" [disabled]="cargando">
+          {{ cargando ? 'Consultando...' : 'Consultar' }}
+        </button>
+      </div>
+    </div>
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </section>
+
+  <section class="results" *ngIf="contribuyente || vehiculoData || licenciaData">
+    <article class="card" *ngIf="contribuyente">
+      <h2>Contribuyente (SRI)</h2>
+      <pre>{{ contribuyente | json }}</pre>
+    </article>
+
+    <article class="card" *ngIf="vehiculoData">
+      <h2>Vehículo y Rubros (SRI)</h2>
+      <p><strong>Marca:</strong> {{ vehiculoData.vehiculo?.descripcionMarca }}</p>
+      <p><strong>Modelo:</strong> {{ vehiculoData.vehiculo?.descripcionModelo }}</p>
+      <p><strong>Año:</strong> {{ vehiculoData.vehiculo?.anioAuto }}</p>
+      <p><strong>Último año pagado:</strong> {{ vehiculoData.vehiculo?.ultimoAnioPagado }}</p>
+      <h3>Rubros</h3>
+      <pre>{{ vehiculoData.rubros | json }}</pre>
+    </article>
+
+    <article class="card" *ngIf="licenciaData">
+      <h2>Licencia y Puntos (ANT)</h2>
+      <p><strong>Cédula:</strong> {{ licenciaData.cedula }}</p>
+      <p><strong>Nombre:</strong> {{ licenciaData.nombre }}</p>
+      <p><strong>Puntos:</strong> {{ licenciaData.puntos }}</p>
+      <p><strong>Origen:</strong> {{ licenciaData.fuente }}</p>
+    </article>
+  </section>
+</main>
